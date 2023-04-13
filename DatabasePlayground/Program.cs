@@ -1,26 +1,17 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using DatabasePlayground;
 using DbTypes;
 
-var tlr = new ThreadLocal<Random>(() => new Random());
-var i = 0;
-File.ReadLines(@"C:\Users\lando\RiderProjects\DatabasePlayground\DatabasePlayground\names.txt")
-    .AsParallel()
-    .Select(name =>
-    {
-        var p = new Person(name, DateTime.Now);
-        var r = tlr.Value!;
-        return new BankAccount(p, r.NextDouble() * 1_000_000, r.NextSingle() >= 0.5f);
-    })
-    .ForAll(ba =>
-    {
-        if (ba.IsFrozen)
-        {
-            return;
-        }
-        var s = ba.Balance.ToString("N2");
-        Console.WriteLine(s);
-        Interlocked.Increment(ref i);
-    });
-    
-Console.WriteLine(i);
+var sim = new PeopleSim(0.15, 0, 10, TimeSpan.FromSeconds(0.1));
+sim.SimulationTick += (_, info) =>
+{
+    Console.WriteLine(string.Join(", ", info.stocks.Select(s => $"{s.Symbol}: {s.Value:C3}")));
+};
+
+var cancelTokenSrc = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+sim.StartSimThread(cancelTokenSrc.Token);
+
+cancelTokenSrc.Token.WaitHandle.WaitOne();
