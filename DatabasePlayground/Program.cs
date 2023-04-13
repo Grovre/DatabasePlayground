@@ -1,10 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Collections.Concurrent;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Text;
-using DatabasePlayground.Extensions;
 using DbTypes;
 
 var tlr = new ThreadLocal<Random>(() => new Random());

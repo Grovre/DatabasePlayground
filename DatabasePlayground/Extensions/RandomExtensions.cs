@@ -1,6 +1,4 @@
-﻿using System.Collections.Immutable;
-
-namespace DatabasePlayground.Extensions;
+﻿namespace DatabasePlayground.Extensions;
 
 public static class RandomExtensions
 {
