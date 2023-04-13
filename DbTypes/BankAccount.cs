@@ -5,25 +5,22 @@ namespace DbTypes;
 
 public class BankAccount : IIdentification
 {
-    public static readonly ConcurrentDictionary<Guid, BankAccount> BankAccountOwnerMap = new();
-
     public Guid Id { get; }
-    public Guid PersonOwner { get; }
+    public Person Owner { get; }
     public double Balance { get; private set; }
-    public bool Frozen { get; private set; }
+    public bool IsFrozen { get; private set; }
 
-    public BankAccount(Guid personOwner, double balance, bool frozen)
+    public BankAccount(Person owner, double balance, bool isFrozen)
     {
         Id = Guid.NewGuid();
-        PersonOwner = personOwner;
+        Owner = owner;
         Balance = balance;
-        Frozen = frozen;
-        BankAccountOwnerMap.TryAdd(personOwner, this);
+        IsFrozen = isFrozen;
     }
 
     public bool Deposit(double amount)
     {
-        if (Frozen)
+        if (IsFrozen)
             return false;
         Balance += amount;
         return true;
@@ -36,11 +33,11 @@ public class BankAccount : IIdentification
 
     public void Freeze()
     {
-        Frozen = true;
+        IsFrozen = true;
     }
 
     public void Unfreeze()
     {
-        Frozen = false;
+        IsFrozen = false;
     }
 }

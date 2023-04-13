@@ -3,16 +3,24 @@
 using DbTypes;
 
 var tlr = new ThreadLocal<Random>(() => new Random());
+var i = 0;
 File.ReadLines(@"C:\Users\lando\RiderProjects\DatabasePlayground\DatabasePlayground\names.txt")
     .AsParallel()
-    .Select(s =>
+    .Select(name =>
     {
-        var p = new Person(s, DateTime.Now);
-        new BankAccount(p.Id, tlr.Value!.NextDouble() * 1_000_000, false);
-        return p;
+        var p = new Person(name, DateTime.Now);
+        var r = tlr.Value!;
+        return new BankAccount(p, r.NextDouble() * 1_000_000, r.NextSingle() >= 0.5f);
     })
-    .ForAll(p =>
+    .ForAll(ba =>
     {
-        var s = BankAccount.BankAccountOwnerMap[p.Id].Balance.ToString("N2");
+        if (ba.IsFrozen)
+        {
+            return;
+        }
+        var s = ba.Balance.ToString("N2");
         Console.WriteLine(s);
+        Interlocked.Increment(ref i);
     });
+    
+Console.WriteLine(i);
