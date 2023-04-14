@@ -10,13 +10,13 @@ public class PeopleSim
     public BankAccount[] BankAccounts { get; }
     public Stock[] Stocks { get; }
     public bool IsRunning { get; private set; } = false;
-    public double MaximumStockPercentageChangeInTick { get; }
+    public double MaximumRandomizedStockValueChangePerTick { get; }
     public TimeSpan TickInterval { get; set; }
 
-    public PeopleSim(double maximumStockPercentageChange, int amountOfBankAccounts, int amountOfStocks, TimeSpan tickInterval)
+    public PeopleSim(double maximumRandomizedStockValueChange, int amountOfBankAccounts, int amountOfStocks, TimeSpan tickInterval)
     {
         TickInterval = tickInterval;
-        MaximumStockPercentageChangeInTick = maximumStockPercentageChange;
+        MaximumRandomizedStockValueChangePerTick = maximumRandomizedStockValueChange;
         BankAccounts = new BankAccount[amountOfBankAccounts];
         Stocks = new Stock[amountOfStocks];
 
@@ -41,7 +41,7 @@ public class PeopleSim
             {
                 foreach (var t in Stocks)
                 {
-                    t.Value += t.Value * (Random.Shared.NextDouble() * MaximumStockPercentageChangeInTick * 2 - MaximumStockPercentageChangeInTick);
+                    t.Value += t.Value * (Random.Shared.NextDouble() * MaximumRandomizedStockValueChangePerTick * 2 - MaximumRandomizedStockValueChangePerTick);
                 }
 
                 SimulationTick?.Invoke(this, (BankAccounts, Stocks));
