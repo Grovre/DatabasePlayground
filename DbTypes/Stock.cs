@@ -2,6 +2,9 @@
 
 namespace DbTypes;
 
+/// <summary>
+/// Base class for containing data relevant to a stock. Includes a symbol and value.
+/// </summary>
 public class Stock : IIdentification
 {
     public Guid Id { get; }

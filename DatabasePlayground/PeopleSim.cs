@@ -3,6 +3,10 @@ using DbTypes;
 
 namespace DatabasePlayground;
 
+/// <summary>
+/// This will likely undergo changes to make bank accounts/persons have a weighted decision on purchasing shares
+/// of a stock based on news and randomization instead of relying on "dev-sponsored" journalism (News instances)
+/// </summary>
 public class PeopleSim
 {
     public event EventHandler<(BankAccount[] accounts, Stock[] stocks)>? SimulationTick;

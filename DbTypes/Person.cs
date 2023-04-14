@@ -2,6 +2,9 @@
 
 namespace DbTypes;
 
+/// <summary>
+/// Base class defining the basic traits of a person. Includes a name and birthday
+/// </summary>
 public class Person : IIdentification
 {
     public Guid Id { get; }

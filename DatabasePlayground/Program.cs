@@ -9,11 +9,11 @@ sim.SimulationTick += (_, info) =>
     var goodNews = new News("Good news!", 0.05, 0.025);
     goodNews.StockAffectedEvent += (sender, payload) =>
     {
-        Console.WriteLine($"Stock {payload.stock.Symbol} had a {payload.percentageChange:P} change to its value with a difference of {payload.newValue - payload.oldValue:N3}");
+        Console.WriteLine($"Stock {payload.stock.Symbol} had a {payload.percentageChange:P} change to its value from news, with a literal change of {payload.newValue - payload.oldValue:C3}");
     };
     
     goodNews.ApplyToMarketValues(info.stocks.Take(2), false); // Take 2 to reduce console printing for playing
-    Console.WriteLine(string.Join(", ", info.stocks.Select(s => $"{s.Symbol}: {s.Value}\n")));
+    Console.WriteLine(string.Join(", ", info.stocks.Select(s => $"{s.Symbol}: {s.Value:C3}\n")));
 };
 
 var cancelTokenSrc = new CancellationTokenSource(TimeSpan.FromSeconds(60));
